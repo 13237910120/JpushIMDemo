@@ -33,6 +33,6 @@ dependencies {
     // android 6.0
     compile 'pub.devrel:easypermissions:0.4.0'
     //下拉刷新库
-     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.2'
+     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
 }

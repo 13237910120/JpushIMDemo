@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reflash_header_content"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <LinearLayout
+        android:id="@+id/reflash_header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/reflash_header_hint_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下拉刷新" />
+
+        <TextView
+            android:id="@+id/reflash_header_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textSize="12sp"
+            android:text="刷新时间"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/reflash_header_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/reflash_header_text"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="-45dp"
+        android:src="@mipmap/xlistview_arrow" />
+
+    <ProgressBar
+        android:id="@+id/reflash_header_progressbar"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignLeft="@id/reflash_header_text"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="-40dp"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDrawable="@drawable/common_loading"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</RelativeLayout>
+

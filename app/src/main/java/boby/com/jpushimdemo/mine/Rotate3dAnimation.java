@@ -1,5 +1,6 @@
 package boby.com.jpushimdemo.mine;
 
+import android.content.Context;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.view.animation.Animation;
@@ -10,55 +11,37 @@ import android.view.animation.Transformation;
  * Created by boby on 2017/11/16.
  */
 
-public class Rotate3dAnimation  extends Animation {
-
-
-    //开始角度
-    private float startDegree;
-    //结束角度
-    private float endDegree;
-
-    /**
-     * 这个旋转动画围绕在2D空间的中心点执行.你可以用X轴坐标(叫做centerX)和Y轴(叫做centerY)
-     * 坐标来定义这个中心点
-     */
-    private float centerX;
-    private float centerY;
-    /**
-     * 控制镜头景深，不需要的话给0值即可
-     * mReverse 为true，表示反方向，false 表示正方向
-     */
-    private float deepZ;
-    private boolean mReverse;
-    //用于辅助实现3d效果。
+public class Rotate3dAnimation extends Animation {
+    private final float mFromDegrees;
+    private final float mToDegrees;
+    private final float mCenterX;
+    private final float mCenterY;
+    private final float mDepthZ;
+    private final boolean mReverse;
     private Camera mCamera;
+    float scale = 1;    // <------- 像素密度
 
-    //X轴方向，或Y轴方向
-    enum DIRECTION {
-        X, Y
-    }
+    /**
+     * 创建一个绕y轴旋转的3D动画效果，旋转过程中具有深度调节，可以指定旋转中心。
+     * @param context     <------- 添加上下文,为获取像素密度准备
+     * @param fromDegrees 起始时角度
+     * @param toDegrees   结束时角度
+     * @param centerX     旋转中心x坐标
+     * @param centerY     旋转中心y坐标
+     * @param depthZ      最远到达的z轴坐标
+     * @param reverse     true 表示由从0到depthZ，false相反
+     */
+    public Rotate3dAnimation(Context context, float fromDegrees, float toDegrees,
+                             float centerX, float centerY, float depthZ, boolean reverse) {
+        mFromDegrees = fromDegrees;
+        mToDegrees = toDegrees;
+        mCenterX = centerX;
+        mCenterY = centerY;
+        mDepthZ = depthZ;
+        mReverse = reverse;
 
-    DIRECTION direction = DIRECTION.Y;
-
-    Rotate3dAnimation(float fromDegree, float toDegree, float centerX,
-                      float centerY, float deepZ, boolean reverse) {
-        this.startDegree = fromDegree;
-        this.endDegree = toDegree;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.deepZ = deepZ;
-        this.mReverse = reverse;
-    }
-
-    Rotate3dAnimation(float fromDegree, float toDegree, float centerX,
-                      float centerY, float deepZ, boolean reverse, DIRECTION direction) {
-        this.startDegree = fromDegree;
-        this.endDegree = toDegree;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.deepZ = deepZ;
-        this.mReverse = reverse;
-        this.direction = direction;
+        // 获取手机像素密度 （即dp与px的比例）
+        scale = context.getResources().getDisplayMetrics().density;
     }
 
     @Override
@@ -69,26 +52,35 @@ public class Rotate3dAnimation  extends Animation {
 
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
-        super.applyTransformation(interpolatedTime, t);
-        float fromDegree = startDegree;
-        float degree = fromDegree + (endDegree - startDegree) * interpolatedTime;
-
+        final float fromDegrees = mFromDegrees;
+        float degrees = fromDegrees + ((mToDegrees - fromDegrees) * interpolatedTime);
+        final float centerX = mCenterX;
+        final float centerY = mCenterY;
+        final Camera camera = mCamera;
         final Matrix matrix = t.getMatrix();
+        camera.save();
 
-        mCamera.save();
+        // 调节深度
         if (mReverse) {
-            mCamera.translate(0, 0, deepZ * interpolatedTime);
+            camera.translate(0.0f, 0.0f, mDepthZ * interpolatedTime);
         } else {
-            mCamera.translate(0, 0, deepZ * (1 - interpolatedTime));
+            camera.translate(0.0f, 0.0f, mDepthZ * (1.0f - interpolatedTime));
         }
-        if (direction == DIRECTION.Y) {
-            mCamera.rotateY(degree);
-        } else {
-            mCamera.rotateX(degree);
-        }
-        mCamera.getMatrix(matrix);
-        mCamera.restore();
 
+        // 绕y轴旋转
+        camera.rotateY(degrees);
+
+        camera.getMatrix(matrix);
+        camera.restore();
+
+        // 修正失真，主要修改 MPERSP_0 和 MPERSP_1
+        float[] mValues = new float[9];
+        matrix.getValues(mValues);              //获取数值
+        mValues[6] = mValues[6]/scale;          //数值修正
+        mValues[7] = mValues[7]/scale;          //数值修正
+        matrix.setValues(mValues);              //重新赋值
+
+        // 调节中心点
         matrix.preTranslate(-centerX, -centerY);
         matrix.postTranslate(centerX, centerY);
     }

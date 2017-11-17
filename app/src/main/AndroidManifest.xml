@@ -20,18 +20,20 @@
         <activity
             android:name=".messages.MessageListActivity"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+           
         </activity>
         <activity
             android:name=".messages.VideoActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
 
         </activity>
-        <activity android:name=".mine.MainActivity"/>
+        <activity android:name=".mine.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

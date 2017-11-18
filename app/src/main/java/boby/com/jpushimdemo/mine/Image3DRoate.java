@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 /**
@@ -15,9 +16,8 @@ import android.widget.ImageView;
 public class Image3DRoate extends ImageView {
 
     //Camera类
-    private Camera mCamera=new Camera();
-    private Matrix mMatrix = new Matrix();
-
+    private Camera mCamera;
+    private Matrix mMatrix ;
 
     float scale = 1;    // <------- 像素密度
 
@@ -25,56 +25,52 @@ public class Image3DRoate extends ImageView {
     private final float mDepthZ=0;//深度
     public Image3DRoate(Context context) {
         super(context);
+        init(context);
     }
 
     public Image3DRoate(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
 
     public Image3DRoate(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.e("draw ",degrees+"");
+        mCamera.save();
+        //绕X轴翻转
+//        mCamera.rotateX(-deltaY);
+        //绕Y轴翻转
+        mCamera.rotateY(degrees);
+        //设置camera作用矩阵
+        mCamera.getMatrix(mMatrix);
+        mCamera.restore();
+        //设置翻转中心点
+        mMatrix.preTranslate(-getWidth()/2, -getHeight()/2);
+        mMatrix.postTranslate(getWidth()/2, getHeight()/2);
+        canvas.concat(mMatrix);
+//        canvas.setMatrix(mMatrix);
         super.onDraw(canvas);
-        roate3d(canvas.getMatrix());
+
     }
 
     void init(Context context){
         // 获取手机像素密度 （即dp与px的比例）
         scale = context.getResources().getDisplayMetrics().density;
-
+        mCamera=new Camera(); //创建一个没有任何转换效果的新的Camera实例
+        mMatrix = new Matrix();
     }
 
 
-    void roate3d(Matrix matrix){
-
-        final float centerX = getWidth()/2;
-        final float centerY = getHeight()/2;
-        final Camera camera = mCamera;
-        camera.save();
-
-//        // 调节深度
-//        if (mReverse) {
-//            camera.translate(0.0f, 0.0f, mDepthZ * interpolatedTime);
-//        } else {
-//            camera.translate(0.0f, 0.0f, mDepthZ * (1.0f - interpolatedTime));
-//        }
-
-        // 绕y轴旋转
-        camera.rotateY(degrees);
-
-        camera.getMatrix(matrix);
-        camera.restore();
-
-        // 调节中心点
-        matrix.preTranslate(-centerX, -centerY);
-        matrix.postTranslate(centerX, centerY);
-    }
 
    public void setDegrees(float degrees){
         this.degrees=degrees;
-        postInvalidate();
+       invalidate();
     }
+
+
 }

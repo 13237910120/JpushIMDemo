@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Layout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ public class MyRefrashHeader implements RefreshHeader {
     private View rootView;
     private  Context mContext;
     private TextView mHearHintText; //下拉刷新提示语
-    private ImageView reflash_header_arrow;//下拉动画
+    private Image3DRoate reflash_header_arrow;//下拉动画
     private ProgressBar reflash_header_progressbar;//加载进度条
     public MyRefrashHeader(Context context) {
         mContext=context;
@@ -52,7 +53,8 @@ public class MyRefrashHeader implements RefreshHeader {
      */
     @Override
     public void onPullingDown(float percent, int offset, int headerHeight, int extendHeight) {
-
+//        Log.e("pullingdown:" ," percent:"+percent+" offset:"+offset+" headerHeight:"+headerHeight+" extendHeight:"+extendHeight);
+        reflash_header_arrow.setDegrees(percent*720);
     }
 
     /**
@@ -70,7 +72,7 @@ public class MyRefrashHeader implements RefreshHeader {
     private void initView() {
         rootView=LayoutInflater.from(mContext).inflate(R.layout.reflash_m_header,null);
         mHearHintText= (TextView) rootView.findViewById(R.id.reflash_header_hint_textview);
-        reflash_header_arrow= (ImageView) rootView.findViewById(R.id.reflash_header_arrow);
+        reflash_header_arrow= (Image3DRoate) rootView.findViewById(R.id.reflash_header_arrow);
         reflash_header_progressbar= (ProgressBar) rootView.findViewById(R.id.reflash_header_progressbar);
     }
 
@@ -144,7 +146,7 @@ public class MyRefrashHeader implements RefreshHeader {
                 mHearHintText.setText("下拉开始刷新");
                 reflash_header_arrow.setVisibility(VISIBLE);//显示下拉动画
                 reflash_header_progressbar.setVisibility(GONE);//隐藏动画
-                reflash_header_arrow.animate().rotation(0);//
+//                reflash_header_arrow.animate().rotation(0);//
                 break;
             case Refreshing:
                 mHearHintText.setText("正在刷新");
@@ -153,7 +155,7 @@ public class MyRefrashHeader implements RefreshHeader {
                 break;
             case ReleaseToRefresh:
                 mHearHintText.setText("松开加载数据");
-                reflash_header_arrow.animate().rotation(180);//显示箭头改为朝上
+//                reflash_header_arrow.animate().rotation(180);//显示箭头改为朝上
 
                 break;
         }

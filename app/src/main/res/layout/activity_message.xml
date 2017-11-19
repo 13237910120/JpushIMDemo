@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<boby.com.jpushimdemo.mine.ChatRootView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chat_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3">
+
+    <RelativeLayout
+        android:id="@+id/back_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:background="#ff5a3a"
+
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/chat_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/title_background"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:src="@drawable/ret_urn" />
+
+            <TextView
+                android:id="@+id/chat_title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                tools:text="凌霄" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chat_info"
+            android:layout_width="45dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/title_background"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/chat_detailinform" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/back_title"
+        android:layout_above="@+id/chat_input">
+        <!--历史会话列表-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/message_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <include
+
+        android:id="@+id/chat_input"
+        layout="@layout/sing_chat_input_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</boby.com.jpushimdemo.mine.ChatRootView>

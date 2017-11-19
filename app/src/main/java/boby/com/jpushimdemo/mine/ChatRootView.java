@@ -79,6 +79,22 @@ public class ChatRootView extends RelativeLayout {
         }
     }
 
+    public OnKeyboardChangedListener getmKeyboardListener() {
+        return mKeyboardListener;
+    }
+
+    public void setmKeyboardListener(OnKeyboardChangedListener mKeyboardListener) {
+        this.mKeyboardListener = mKeyboardListener;
+    }
+
+    public OnSizeChangedListener getmSizeChangedListener() {
+        return mSizeChangedListener;
+    }
+
+    public void setmSizeChangedListener(OnSizeChangedListener mSizeChangedListener) {
+        this.mSizeChangedListener = mSizeChangedListener;
+    }
+
     /**
      * 软件盘状态监听
      */

@@ -156,7 +156,6 @@ public class MyRefrashHeader implements RefreshHeader {
             case ReleaseToRefresh:
                 mHearHintText.setText("松开加载数据");
 //                reflash_header_arrow.animate().rotation(180);//显示箭头改为朝上
-
                 break;
         }
     }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/icon_layout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp">
+            <!--会话头像-->
+            <ImageView
+                android:id="@+id/icon_service"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher" />
+            <!--未读消息数-->
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:id="@+id/unreadmsg"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/scree_prompt"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:shadowColor="#19000000"
+                    android:shadowDy="1.0"
+                    android:shadowRadius="1.0"
+                    android:text="99+"
+                    android:textColor="#ffffffff"
+                    android:textSize="8dip"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--发送者-->
+                <TextView
+                    android:id="@+id/recent_list_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dp"
+                    android:layout_marginRight="58.0dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/icon_layout"
+                    android:duplicateParentState="true"
+                    android:ellipsize="end"
+                    android:gravity="left|center"
+                    android:includeFontPadding="false"
+                    android:padding="0.0dip"
+                    android:singleLine="true"
+                    android:text="潘佛荣"
+                    android:textColor="#ff646464"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/recent_list_item_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recent_list_item_name"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:duplicateParentState="true"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="6.0dip"
+                    android:paddingRight="6.0dip"
+                    android:singleLine="true"
+                    android:text="[图片]"
+                    android:textColor="#ff969696"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+            <!--发送时间-->
+            <TextView
+                android:id="@+id/recent_list_item_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:duplicateParentState="true"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:includeFontPadding="false"
+                android:singleLine="true"
+                android:text="昨天"
+                android:textColor="#ff969696"
+                android:textSize="10.0sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffe0e0e0"
+        android:layout_alignParentBottom="true" />
+</LinearLayout>

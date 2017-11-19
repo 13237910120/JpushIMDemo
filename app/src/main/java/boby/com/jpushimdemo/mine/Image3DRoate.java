@@ -40,7 +40,7 @@ public class Image3DRoate extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.e("draw ",degrees+"");
+//        Log.e("draw ",degrees+"");
         mCamera.save();
         //绕X轴翻转
 //        mCamera.rotateX(-deltaY);

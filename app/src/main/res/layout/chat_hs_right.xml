@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="5dp"
+    android:gravity="right">
+    <!--发送时间-->
+    <TextView
+        android:id="@+id/chat_right_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/chat_size_select"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="2014-04-29 15:54:59"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="15dp"/>
+    <!--发送人-->
+    <TextView
+        android:id="@+id/chat_right_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:layout_marginRight="67dp"
+        android:text="小李子"
+
+        android:textColor="#969696"/>
+    <!--发送消息-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/chat_chattextgray"
+            android:orientation="vertical">
+            <!--文字消息，包括表情-->
+            <boby.com.jpushimdemo.mine.utils.MyTextViewEx
+                android:id="@+id/chat_right_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp"
+                android:textColor="#646464"
+                android:textSize="16dp" />
+            <!--图片消息-->
+            <ImageView
+                android:id="@+id/chat_right_msgimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                tools:visibility="visible" />
+            <!--声音消息-->
+            <LinearLayout
+                android:id="@+id/chat_right_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/chat_right_player_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:textColor="#646464"
+                    android:textSize="12sp"
+                    tools:text="3'" />
+
+                <ImageView
+                    android:id="@+id/chat_right_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/player_right" />
+            </LinearLayout>
+            <!--文件消息-->
+            <LinearLayout
+                android:id="@+id/chat_right_file"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/file_no_type" />
+
+                <TextView
+                    android:id="@+id/chat_right_filename"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="#646464"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <!--头像-->
+        <boby.com.jpushimdemo.mine.view.RoundImageView
+            android:id="@+id/chat_right_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            tools:src="@mipmap/ic_launcher"
+            android:layout_marginRight="15dp"/>
+
+
+    </LinearLayout>
+</LinearLayout>

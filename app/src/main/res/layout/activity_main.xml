@@ -10,8 +10,9 @@
         android:id="@+id/smartRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <!--历史会话列表-->
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/message_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"

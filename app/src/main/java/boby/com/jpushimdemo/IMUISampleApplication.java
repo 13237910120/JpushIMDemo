@@ -14,10 +14,17 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
+import java.util.Map;
+
+import cn.jpush.im.android.api.JMessageClient;
+
 //import com.squareup.leakcanary.LeakCanary;
 
 
 public class IMUISampleApplication extends Application {
+    Map<String, Integer> mFaceMap; //表情
+    Map<String, String> mGifMap;    //动画表情
+    public static IMUISampleApplication instance;
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器
@@ -36,6 +43,15 @@ public class IMUISampleApplication extends Application {
                 return new ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate);
             }
         });
+
+    }
+
+    public static IMUISampleApplication getInstance(){
+        if(null == instance){
+            instance = new IMUISampleApplication();
+
+        }
+        return instance;
     }
     @Override
     public void onCreate() {
@@ -56,7 +72,26 @@ public class IMUISampleApplication extends Application {
                     .penaltyLog()
                     .build());
         }
+        //初始化极光
+        JMessageClient.init(this,true);
 
+    }
 
+    public Map<String, Integer> getFaceMap() {
+        if (mFaceMap.size() == 0) {
+//            initFaceMap();
+        }
+        if (!mFaceMap.isEmpty())
+            return mFaceMap;
+        return null;
+    }
+
+    public Map<String, String> getGifMap() {
+        if (mGifMap.size() == 0) {
+//            initGifMap();
+        }
+        if (!mGifMap.isEmpty())
+            return mGifMap;
+        return null;
     }
 }

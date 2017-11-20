@@ -2,12 +2,14 @@ package boby.com.jpushimdemo.mine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,12 +30,17 @@ import java.util.Date;
 import java.util.List;
 
 import boby.com.jpushimdemo.R;
+import boby.com.jpushimdemo.mine.Adapter.ConversationAdapter;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.GetAvatarBitmapCallback;
 import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
+import cn.jpush.im.android.api.event.ConversationRefreshEvent;
+import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.model.Conversation;
+import cn.jpush.im.android.api.model.GroupInfo;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 
@@ -47,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private ConversationAdapter conversationAdapter;
     private RecyclerView message_list;
 
-
     public static void show(Context context){
         Intent intent=new Intent(context,MainActivity.class);
         context.startActivity(intent);
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         smartRefreshLayout.setRefreshHeader(new MyRefrashHeader(this));
         message_list= (RecyclerView) findViewById(R.id.message_list);
         conversationList=new ArrayList<>();
-        conversationAdapter=new ConversationAdapter(conversationList);
+        conversationAdapter=new ConversationAdapter(conversationList,this);
         message_list.setAdapter(conversationAdapter);
         message_list.setLayoutManager(new LinearLayoutManager(this));
         initJGConversationList();
@@ -68,16 +74,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ConversationType type = conversationList.get(position).getType();
+                Conversation conversation = conversationList.get(position);
+                conversation.resetUnreadCount();//重置会话的未读数。设置为已读
+                conversationAdapter.notifyItemChanged(position);
                 if(single==type){ //个人
-                   UserInfo targetUserInfo= (UserInfo) conversationList.get(position).getTargetInfo();
+                    UserInfo targetUserInfo= (UserInfo) conversation.getTargetInfo();
                     MessageActivity.show(MainActivity.this,targetUserInfo.getUserName());
                 }else {  //群聊
-
+                    GroupInfo groupInfo= (GroupInfo) conversation.getTargetInfo();
+                    MessageActivity.show(MainActivity.this,groupInfo.getGroupID());
                 }
-
-
             }
         });
+        //订阅接收消息,要重写onEvent就能收到消息
+        JMessageClient.registerEventReceiver(this);
     }
 
     void initJGConversationList(){
@@ -95,10 +105,56 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 收到消息
+     */
+    public void onEvent(MessageEvent event) {
+        Log.e("MainActivity","收到消息");
+        Message msg = event.getMessage();
+        if (msg.getTargetType() == ConversationType.group) {
+            long groupId = ((GroupInfo) msg.getTargetInfo()).getGroupID();
+            Conversation conv = JMessageClient.getGroupConversation(groupId);
+            conversationAdapter.setToTop(conv);
+        } else {
+            final UserInfo userInfo = (UserInfo) msg.getTargetInfo();
+            String targetId = userInfo.getUserName();
+            Conversation conv = JMessageClient.getSingleConversation(targetId, userInfo.getAppKey());
+            if (conv != null ) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (TextUtils.isEmpty(userInfo.getAvatar())) {
+                            userInfo.getAvatarBitmap(new GetAvatarBitmapCallback() {
+                                @Override
+                                public void gotResult(int responseCode, String responseMessage, Bitmap avatarBitmap) {
+                                    if (responseCode == 0) {
+                                        conversationAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+                conversationAdapter.setToTop(conv);
+            }
+        }
+
+    }
+    /**
+     * 消息漫游完成事件
+     *
+     * @param event 漫游完成后， 刷新会话事件
+     */
+    public void onEvent(ConversationRefreshEvent event) {
+        Log.e("MainActivity","漫游完成");
+        Conversation conv = event.getConversation();
+        conversationAdapter.setToTop(conv);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        getMessageList();
+//        getMessageList();
     }
     void getMessageList(){
         List<Conversation> conversationList1 = JMessageClient.getConversationList();
@@ -110,61 +166,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public class ConversationAdapter extends BaseQuickAdapter<Conversation,BaseViewHolder>{
-
-        public ConversationAdapter( @Nullable List<Conversation> data) {
-            super(R.layout.chat_conversation_item, data);
-        }
-
-        @Override
-        protected void convert(BaseViewHolder helper, Conversation item) {
-//            helper.setImageResource(R.id.icon_service,item.getAvatarFile()); //对方头像
-            ImageView heardImg=helper.getView(R.id.icon_service);
-            Glide.with(MainActivity.this).fromFile().load(item.getAvatarFile()).into(heardImg);
-            helper.setText(R.id.recent_list_item_name,item.getTitle()); //用户名 如果会话为单聊 --- 用户有昵称，显示昵称。 --- 没有昵称，显示username
-            int unReadMsgCnt = item.getUnReadMsgCnt();
-            if(unReadMsgCnt>0){
-                helper.setGone(R.id.unreadmsg,true);
-                helper.setText(R.id.unreadmsg,String.valueOf(unReadMsgCnt));
-            }else {
-                helper.setGone(R.id.unreadmsg,false);
-            }
-
-            Message lastMessage=item.getLatestMessage();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String lastDate = sdf.format(new Date(lastMessage.getCreateTime()));
-            helper.setText(R.id.recent_list_item_time,lastDate); //最后一条消息发送时间
-
-
-           String message = "";
-            switch ( lastMessage.getContentType()){
-                case  text:
-                    TextContent textContent= (TextContent) lastMessage.getContent();
-                    message=textContent.getText();
-                    break;
-                case  file:
-                    message="[文件]";
-                    break;
-                case  image:
-                    message="[图片]";
-                    break;
-
-                case  voice:
-                    message="[语音]";
-                    break;
-
-                case  location:
-                    message="[位置]";
-                    break;
-
-                case  video:
-                    message="[视屏]";
-                    break;
-            }
-            helper.setText(R.id.recent_list_item_msg,message); //最后一条消息内容
-        }
+    @Override
+    protected void onDestroy() {
+        //注销消息接收
+        JMessageClient.unRegisterEventReceiver(this);
+        super.onDestroy();
     }
-
-
 }

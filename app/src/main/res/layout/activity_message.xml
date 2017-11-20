@@ -73,7 +73,9 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:scrollbars="none"
+            android:overScrollMode="never"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <include
@@ -82,5 +84,7 @@
         layout="@layout/sing_chat_input_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </boby.com.jpushimdemo.mine.ChatRootView>

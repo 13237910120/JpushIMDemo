@@ -7,18 +7,19 @@
     android:paddingTop="10dp"
     android:paddingBottom="5dp">
 
-        <TextView
-            android:id="@+id/chat_letf_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="#ffffff"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:background="@drawable/chat_size_select"
-            android:text="2014-04-29 15:54:59"
-            android:layout_gravity="center"/>
-        <View
+    <TextView
+        android:id="@+id/chat_letf_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/chat_size_select"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="2014-04-29 15:54:59"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+
+    <View
             android:layout_width="fill_parent"
             android:layout_height="15dp"/>
         <TextView

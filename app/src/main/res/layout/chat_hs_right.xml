@@ -124,7 +124,7 @@
             android:id="@+id/chat_right_img"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            tools:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_launcher"
             android:layout_marginRight="15dp"/>
 
 

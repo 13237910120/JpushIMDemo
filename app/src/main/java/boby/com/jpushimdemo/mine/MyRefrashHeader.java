@@ -130,7 +130,7 @@ public class MyRefrashHeader implements RefreshHeader {
         }else {
 
         }
-         return 200;//延迟500毫秒之后再弹回;
+         return 200;//延迟200毫秒之后再弹回;
     }
 
     @Override
